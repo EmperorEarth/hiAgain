@@ -3,7 +3,7 @@ APIs may allow X requests over Y duration but it's inconsiderate to make X reque
 In `hiAgain`, the API's rate limit duration is called the `period` and your self-imposed rate limit is called the `burst`. If you're using an API that allows 500 calls per 5 minutes but also want to follow a self-imposed rate limit of 2 calls per second, then it would look like this with `hiAgain`:
 
 ```
-// prepare to call API
+// create rate limiter
 limiter, err := hiAgain.New(
     serverContext,
     time.Second, // burst duration
@@ -14,8 +14,12 @@ limiter, err := hiAgain.New(
     "20", // contents of X-Rate-Limit-Reset header
 )
 if err != nil {} // handle error
+
+// ...
+
+// prepare API request
 if err := limiter.Wait(requestContext); err != nil {} // handle error
-// call API here
+// call API
 ```
 
 ## Notes:
